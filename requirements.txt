@@ -1,0 +1,154 @@
+Extend the University Course Management System based on using Binary Files with Random Access. Please complete the followings and continue working with the same group as week2.
+
+Objective
+Enhance the existing University Course Management System to store and retrieve course, instructor, and student data in a binary file format using random access. Add proper exception handling, user input functionality, and a text-based menu for performing various operations.
+
+New Features
+1) Binary File Storage
+
+Modify the system to store and retrieve data (students, instructors, and courses) in binary files instead of CSV.
+Each type of data (courses, instructors, students) will have its own binary file (courses.dat, instructors.dat, students.dat).
+How do you store the relation between course/instructor and course/student?
+2) Random Access
+
+Implement random access for records. Users should be able to access a record by its unique ID without reading the entire file.
+Maintain file pointers and record structures for direct access.
+3) Menu-Driven Console Application
+
+Provide a user-friendly, text-based menu to perform the following operations:
+Load initial data from CSV files and save to binary files.
+Add a new record (Course, Instructor, or Student).
+Retrieve a record by its ID.
+Display all records of a specific type.
+Update a record.
+Delete a record.
+Exit the program.
+
+4)Exception Handling
+
+Handle potential errors such as:
+
+File not found.
+
+Invalid binary file structure.
+
+Random access errors (e.g., accessing non-existing IDs).
+
+Missing or invalid user input.
+
+Use custom exceptions wherever necessary (e.g., InvalidBinaryFormatException or RecordNotFoundException).
+
+Implementation Steps
+
+Step 1: Transition to Binary File Storage
+
+Replace CSV-based file reading/writing with binary file handling using RandomAccessFile.
+Define a fixed-size structure for each record type to allow predictable record locations in the binary file.
+How do you store the relation between course/instructor and course/student?
+Using Binary files, Do you need to consider Serialization/Deserialization ?
+
+Record Structure (Example):
+
+Course: CourseID (int), CourseName (String, 50 chars), Credits (int)
+
+Instructor: InstructorID (int), Name (String, 50 chars), Email (String, 50 chars), Department (String, 50 chars)
+
+Student: StudentID (int), Name (String, 50 chars), Email (String, 50 chars)
+
+Step 2: File Operations
+
+Implement methods to:
+
+Write records to binary files.
+
+Read records by position or ID.
+
+Update records.
+
+Delete records (optional: mark deleted records and reuse space).
+
+Step 3: Add Exception Handling
+
+Use try-catch blocks for all file operations.
+
+Validate user input and handle potential exceptions:
+
+IOException: For file-related issues.
+
+RecordNotFoundException: If a record is not found during retrieval.
+
+InvalidDataException: For invalid user input or data format.
+
+Step 4: Build a Menu-Driven Application
+
+Implement a text-based menu using a while loop.
+
+Allow users to perform various operations by selecting menu options:
+
+Load initial data from CSV and convert to binary files.
+
+Add a new record.
+
+Retrieve a record by ID.
+
+Display all records.
+
+Update a record.
+
+Delete a record.
+
+Additional functionality (propose new functionality and implement it!)
+
+Exit.
+
+Deliverables
+
+1) Source Code
+
+Include all classes (e.g., Course, Instructor, Student, and their managers).
+Include file handling and menu logic.
+
+2) Test Data
+
+Provide initial sample data in CSV format for courses, instructors, and students.
+Provide a binary file with test records (after conversion).
+
+3) Documentation
+
+Detailed documentation of the file format (binary structure).
+
+Instructions for running the program.
+
+Examples of adding, retrieving, updating, and deleting records.
+
+Evaluation Criteria
+
+1) File Handling
+
+
+Correct implementation of binary file reading and writing.
+
+Proper random access logic.
+
+2) Exception Handling
+
+Comprehensive exception handling and custom exceptions.
+
+3) User Input
+
+Validation of user inputs.
+
+4) Menu Functionality
+
+Intuitive and functional menu options.
+
+5) Code Quality
+
+Code readability and comments/documentation.
+
+
+Next Class: Prepare to:
+
+Present your solution.
+Demonstrate the binary file structure and random access operations.
+Discuss your approach for managing relationships (e.g., course assignments).
