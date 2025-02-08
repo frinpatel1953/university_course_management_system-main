@@ -35,7 +35,7 @@ public class Menu {
         case 2 -> retrieveRecord();     // Handle retrieving a record by ID
         case 3 -> displayAllRecords();  // Handle displaying all records
         case 4 -> updateRecord();       // Handle updating a record
-        case 5 -> deleteRecord();       // Handle deleting a record
+        case 5 -> deleteRecord();       //Handle deleteing a record
         case 6 -> {                    // Exit the program
           System.out.println("Exiting program...");
           scanner.close();
@@ -48,7 +48,12 @@ public class Menu {
 
   // Method to add a new record based on user input (Course, Instructor, or Student)
   private static void addRecord() {
-    System.out.println("\nAdd Record: Choose type (1: Course, 2: Instructor, 3: Student)");
+    System.out.println("\nAdd Record to");
+    System.out.println("1: Course");
+    System.out.println("2: Instructor");
+    System.out.println("3: Student");
+    System.out.println("4: Return to Main Menu");
+    System.out.print("Enter your choice: ");
     int type = getIntInput();  // Get the record type from the user
 
     try {
@@ -76,8 +81,30 @@ public class Menu {
           int id = getIntInput("Enter Student ID: ");
           String name = getStringInput("Enter Name: ");
           String email = getStringInput("Enter Email: ");
-          StudentFileHandler.addStudent(new Student(id, name, email));
+          Student student = new Student(id, name, email);
+          
+          // Add courses to the student if necessary (can be extended)
+          // while (true) {
+          //   System.out.print("Do you want to enroll in a course? (y/n): ");
+          //   String response = scanner.nextLine();
+          //   if (response.equalsIgnoreCase("n")) break;
+          //   int courseId = getIntInput("Enter Course ID to enroll in: ");
+          //   // Retrieve course from the file and add it to the student (assumes CourseFileHandler has getCourse)
+          //   try {
+          //     Course course = CourseFileHandler.getCourse(courseId);
+          //     student.addCourse(course);
+          //     System.out.println("Course added successfully.");
+          //   } catch (RecordNotFoundException e) {
+          //     System.out.println("Course not found.");
+          //   }
+          // }
+          
+          StudentFileHandler.addStudent(student);
           System.out.println("Student added successfully.");
+        }
+        case 4 -> {
+          System.out.println("Returning to the main menu...");
+          return;
         }
         default -> System.out.println("Invalid type!");  // Handle invalid input
       }
@@ -89,8 +116,17 @@ public class Menu {
 
   // Method to retrieve a record by its ID based on user input (Course, Instructor, or Student)
   private static void retrieveRecord() {
-    System.out.println("\nRetrieve Record: Choose type (1: Course, 2: Instructor, 3: Student)");
+    System.out.println("\nRetrieve Record from:");
+    System.out.println("1: Course");
+    System.out.println("2: Instructor");
+    System.out.println("3: Student");
+    System.out.println("4: Return to Main Menu");
+    System.out.print("Enter your choice: ");
     int type = getIntInput();  // Get the record type from the user
+    if(type == 4){
+      System.out.println("Returning to the main menu...");
+          return;
+    }
     int id = getIntInput("Enter ID: ");  // Get the record ID from the user
 
     try {
@@ -109,8 +145,18 @@ public class Menu {
 
   // Method to display all records of a selected type (Course, Instructor, or Student)
   private static void displayAllRecords() {
-    System.out.println("\nDisplay Records: Choose type (1: Course, 2: Instructor, 3: Student)");
+    System.out.println("\nDisplay Records of:");
+    System.out.println("1: Course");
+    System.out.println("2: Instructor");
+    System.out.println("3: Student");
+    System.out.println("4: Return to Main Menu");
+    System.out.print("Enter your choice: ");
     int type = getIntInput();  // Get the record type from the user
+
+    if(type == 4){
+      System.out.println("Returning to the main menu...");
+          return;
+    }
 
     try {
       // Switch based on record type to display all records
@@ -118,6 +164,10 @@ public class Menu {
         case 1 -> CourseFileHandler.getAllCourses().forEach(System.out::println);
         case 2 -> InstructorFileHandler.displayAllInstructors();
         case 3 -> StudentFileHandler.displayAllStudents();
+        case 4 -> {
+          System.out.println("Returning to the main menu...");
+          return;
+        }
         default -> System.out.println("Invalid type!");  // Handle invalid input
       }
     } catch (IOException e) {
@@ -128,9 +178,20 @@ public class Menu {
 
   // Method to update an existing record by ID and new values
   private static void updateRecord() {
-    System.out.println("\nUpdate Record: Choose type (1: Course, 2: Instructor, 3: Student)");
+    System.out.println("\nUpdate Record to:");
+    System.out.println("1: Course");
+    System.out.println("2: Instructor");
+    System.out.println("3: Student");
+    System.out.println("4: Return to Main Menu");
+    System.out.print("Enter your choice: ");
     int type = getIntInput();  // Get the record type from the user
+    if(type == 4){
+      System.out.println("Returning to the main menu...");
+          return;
+    }
     int id = getIntInput("Enter ID: ");  // Get the record ID from the user
+   
+
 
     try {
       // Switch based on record type to update the corresponding record
@@ -139,7 +200,7 @@ public class Menu {
           // Get new Course details from the user and update the record
           String name = getStringInput("Enter new Course Name: ");
           int credits = getIntInput("Enter new Credits: ");
-          CourseFileHandler.updateCourse(id, name, credits);
+          // CourseFileHandler.updateCourse(id, name, credits, null);
           System.out.println("Course updated successfully.");
         }
         case 2 -> {
@@ -147,7 +208,7 @@ public class Menu {
           String name = getStringInput("Enter new Name: ");
           String email = getStringInput("Enter new Email: ");
           String dept = getStringInput("Enter new Department: ");
-          InstructorFileHandler.updateInstructor(id, name, email, dept);
+          // InstructorFileHandler.updateInstructor(id, name, email, dept, null);
           System.out.println("Instructor updated successfully.");
         }
         case 3 -> {
@@ -156,6 +217,10 @@ public class Menu {
           String email = getStringInput("Enter new Email: ");
           StudentFileHandler.updateStudent(id, name, email);
           System.out.println("Student updated successfully.");
+        }
+        case 4 -> {
+          System.out.println("Returning to the main menu...");
+          return;
         }
         default -> System.out.println("Invalid type!");  // Handle invalid input
       }
@@ -167,9 +232,20 @@ public class Menu {
 
   // Method to delete an existing record by ID
   private static void deleteRecord() {
-    System.out.println("\nDelete Record: Choose type (1: Course, 2: Instructor, 3: Student)");
+    System.out.println("\nDelete Record of:");
+    System.out.println("1: Course");
+    System.out.println("2: Instructor");
+    System.out.println("3: Student");
+    System.out.println("4: Return to Main Menu");
+    System.out.print("Enter your choice: ");
     int type = getIntInput();  // Get the record type from the user
+    if(type == 4){
+      System.out.println("Returning to the main menu...");
+          return;
+    }
     int id = getIntInput("Enter ID: ");  // Get the record ID from the user
+    
+
 
     try {
       // Switch based on record type to delete the corresponding record
@@ -177,6 +253,10 @@ public class Menu {
         case 1 -> CourseFileHandler.deleteCourse(id);
         case 2 -> InstructorFileHandler.deleteInstructor(id);
         case 3 -> StudentFileHandler.deleteStudent(id);
+        case 4 -> {
+          System.out.println("Returning to the main menu...");
+          return;
+        }
         default -> System.out.println("Invalid type!");  // Handle invalid input
       }
       System.out.println("Record deleted successfully.");
