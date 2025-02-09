@@ -24,7 +24,7 @@ public class MainController {
     @FXML
 void btnAROnClick(ActionEvent event) {
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("src\\gui\\views\\AddRecordView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddRecordView.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
@@ -35,16 +35,41 @@ void btnAROnClick(ActionEvent event) {
     }
 }
 
+@FXML
+    void btnRROnClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DisplayRecordView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading DisplayRecordView.fxml. Make sure the file is in the correct directory.");
+        }
+    }
+
+    @FXML
+    void btnDsROnClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DisplayAllRecordsView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading AddRecordView.fxml. Make sure the file is in the correct directory.");
+        }
+    }
+
 
     @FXML
     void btnDROnClick(ActionEvent event) {
         System.out.println("Delete a Record Clicked");
     }
 
-    @FXML
-    void btnDsROnClick(ActionEvent event) {
-        System.out.println("Display All Records Clicked");
-    }
+    
 
     @FXML
     void btnExtOnClick(ActionEvent event) {
@@ -52,10 +77,7 @@ void btnAROnClick(ActionEvent event) {
         System.exit(0);
     }
 
-    @FXML
-    void btnRROnClick(ActionEvent event) {
-        System.out.println("Retrieve a Record Clicked");
-    }
+    
 
     @FXML
     void btnUROnClick(ActionEvent event) {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+            prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/8" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="gui.DisplayRecordController">
+   <children>
+      <TextArea layoutX="141.0" layoutY="40.0" prefHeight="40.0" prefWidth="369.0" text="University Course Management System">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </TextArea>
+      <TextArea layoutX="219.0" layoutY="98.0" prefHeight="58.0" prefWidth="195.0" text="Display a Record By ID">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextArea>
+      <Button fx:id="btnCourse" layoutX="175.0" layoutY="188.0" mnemonicParsing="false" onAction="#btnCourseOnClick" text="Course" />
+      <Button fx:id="btnInstructor" layoutX="402.0" layoutY="188.0" mnemonicParsing="false" onAction="#btnInstructorOnClick" text="Instructor" />
+      <Button fx:id="btnStudent" layoutX="175.0" layoutY="267.0" mnemonicParsing="false" onAction="#btnStudentOnClick" text="Student" />
+      <Button fx:id="btnBackToMainMenu" layoutX="402.0" layoutY="267.0" mnemonicParsing="false" onAction="#btnBackToMainMenu" text="Back to Main Menu" />
+   </children>
+</AnchorPane>
