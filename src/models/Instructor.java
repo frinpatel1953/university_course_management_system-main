@@ -2,6 +2,11 @@ package models;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
+
+import exceptions.RecordNotFoundException;
+import storage.CourseFileHandler;
 
 /**
  * Represents an Instructor with an ID, name, email, and department.
@@ -12,6 +17,7 @@ public class Instructor {
   private String name;
   private String email;
   private String department;
+  private List<Course> assignedCourses;
 
   public static final int NAME_SIZE = 50;
   public static final int EMAIL_SIZE = 50;
@@ -23,11 +29,24 @@ public class Instructor {
     this.name = formatString(name, NAME_SIZE);
     this.email = formatString(email, EMAIL_SIZE);
     this.department = formatString(department, DEPT_SIZE);
+    this.assignedCourses = new ArrayList<>();
   }
 
   private String formatString(String str, int length) {
     return String.format("%-" + length + "s", str).substring(0, length);
   }
+
+    /**
+     * Assigns the Instructor in a course.
+     */
+    public void addCourse(Course course) throws RecordNotFoundException {
+        if (course == null) {
+            throw new RecordNotFoundException("Course is null.");
+        }
+        if (!assignedCourses.contains(course)) {
+            assignedCourses.add(course);
+        }
+    }
 
   /**
    * Writes instructor data to a binary file.
@@ -37,6 +56,11 @@ public class Instructor {
     file.writeChars(name);
     file.writeChars(email);
     file.writeChars(department);
+
+    file.writeInt(assignedCourses.size());
+    for (Course course : assignedCourses) {
+        file.writeInt(course.getCourseID());
+    }
   }
 
   /**
@@ -60,16 +84,54 @@ public class Instructor {
       deptChars[i] = file.readChar();
     String department = new String(deptChars).trim();
 
-    return new Instructor(id, name, email, department);
-  }
+    // return new Instructor(id, name, email, department);
+    Instructor instructor = new Instructor(id, name, email, department);
+
+    // Read enrolled courses
+    int numCourses = file.readInt();
+    for (int i = 0; i < numCourses; i++) {
+        int courseId = file.readInt();
+        try {
+            Course course = CourseFileHandler.getCourse(courseId);
+            instructor.addCourse(course);
+        } catch (RecordNotFoundException e) {
+            // Ignore if course is not found
+        }
+    }
+
+    return instructor;
+    }
 
   public int getInstructorID() {
     return instructorID;
   }
 
-  @Override
-  public String toString() {
-    return "Instructor ID: " + instructorID + ", Name: " + name.trim() +
-        ", Email: " + email.trim() + ", Department: " + department.trim();
+  public List<Course> getAssignedCourses() {
+    return assignedCourses;
   }
+
+  @Override
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Instructor ID: ").append(instructorID)
+      .append(", Name: ").append(name.trim())
+      .append(", Email: ").append(email.trim())
+      .append(", Department: ").append(department.trim())
+      .append("\nAssigned Courses:\n");
+    
+    if (assignedCourses.isEmpty()) {
+        sb.append("None");
+    } else {
+        for (Course course : assignedCourses) {
+            sb.append(course).append("\n");
+        }
+    }
+    return sb.toString();
+}
+
+public Object getName() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getName'");
+}
+
 }

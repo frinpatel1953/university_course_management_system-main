@@ -1,14 +1,17 @@
 package storage;
 
 import models.Instructor;
+import models.Course;
 import exceptions.RecordNotFoundException;
 import java.io.*;
-// import utils.BinaryFileCheck;
+import java.util.List;
+import java.util.Scanner;
 
 public class InstructorFileHandler {
   private static final String FILE_NAME = "src\\data\\instructors.dat"; // Path to the binary file
+  private static Scanner scanner = new Scanner(System.in);
 
-  /**
+   /**
    * Adds a new instructor record to the binary file.
    * @param instructor the instructor to be added
    * @throws IOException if file format is invalid or other I/O errors
@@ -24,12 +27,40 @@ public class InstructorFileHandler {
         }
     }
 
-    // If no duplicate is found, append the new instructor
+    // Ask if the user wants to assign a course
+    System.out.print("Do you want to assign a course to this instructor? (y/n): ");
+    String response = scanner.nextLine();
+
+    if (response.equalsIgnoreCase("y")) {
+        // Loop until user says no
+        while (true) {
+            System.out.print("Enter Course ID to assign: ");
+            int courseId = Integer.parseInt(scanner.nextLine());
+
+            try {
+                // Assume CourseFileHandler has a method to get course by ID
+                Course course = CourseFileHandler.getCourse(courseId);
+                instructor.addCourse(course);
+                System.out.println("Course assigned successfully!");
+
+                // Ask if the user wants to assign another course
+                System.out.print("Do you want to assign another course? (y/n): ");
+                response = scanner.nextLine();
+                if (response.equalsIgnoreCase("n")) {
+                    break;
+                }
+            } catch (RecordNotFoundException e) {
+                System.out.println("Course with ID " + courseId + " not found.");
+            }
+        }
+    }
+
+    // Append the new instructor to the file
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
         file.seek(file.length()); // Move to the end of the file for appending
         instructor.writeToFile(file); // Write instructor data to the file
     }
-}
+  }
 
   /**
    * Retrieves an instructor by their ID from the binary file.
@@ -39,9 +70,6 @@ public class InstructorFileHandler {
    * @throws RecordNotFoundException if no instructor with the given ID is found
    */
   public static Instructor getInstructor(int instructorID) throws IOException, RecordNotFoundException {
-    // if (!BinaryFileCheck.isBinaryFile(FILE_NAME)) {
-    //   throw new IOException("Invalid file format. Only binary .dat files are allowed.");
-    // }
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
       while (file.getFilePointer() < file.length()) {
         Instructor instructor = Instructor.readFromFile(file);
@@ -64,19 +92,23 @@ public class InstructorFileHandler {
    */
   public static void updateInstructor(int instructorID, String newName, String newEmail, String newDepartment)
       throws IOException, RecordNotFoundException {
-    // if (!BinaryFileCheck.isBinaryFile(FILE_NAME)) {
-    //   throw new IOException("Invalid file format. Only binary .dat files are allowed.");
-    // }
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
       while (file.getFilePointer() < file.length()) {
         long position = file.getFilePointer();
         Instructor instructor = Instructor.readFromFile(file);
         if (instructor.getInstructorID() == instructorID) {
+          // Preserve assigned courses
+          List<Course> assignedCourses = instructor.getAssignedCourses();
+
           file.seek(position); // Move to the position to overwrite
           newName = newName.length() > Instructor.NAME_SIZE ? newName.substring(0, Instructor.NAME_SIZE) : newName;
           newEmail = newEmail.length() > Instructor.EMAIL_SIZE ? newEmail.substring(0, Instructor.EMAIL_SIZE) : newEmail;
           newDepartment = newDepartment.length() > Instructor.DEPT_SIZE ? newDepartment.substring(0, Instructor.DEPT_SIZE) : newDepartment;
+
           instructor = new Instructor(instructorID, newName, newEmail, newDepartment); // Create updated instructor
+          for (Course course : assignedCourses) {
+              instructor.addCourse(course);
+          }
           instructor.writeToFile(file); // Write updated data to file
           return;
         }
@@ -93,9 +125,6 @@ public class InstructorFileHandler {
    */
   public static void deleteInstructor(int instructorID) throws IOException, RecordNotFoundException {
     File tempFile = new File("src\\data\\temp_instructors.dat"); // Temporary file to hold valid records
-    // if (!BinaryFileCheck.isBinaryFile(FILE_NAME)) {
-    //   throw new IOException("Invalid file format. Only binary .dat files are allowed.");
-    // }
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r");
         RandomAccessFile temp = new RandomAccessFile(tempFile, "rw")) {
       boolean found = false;
@@ -119,9 +148,6 @@ public class InstructorFileHandler {
    * @throws IOException if file format is invalid or other I/O errors
    */
   public static void displayAllInstructors() throws IOException {
-    // if (!BinaryFileCheck.isBinaryFile(FILE_NAME)) {
-    //   throw new IOException("Invalid file format. Only binary .dat files are allowed.");
-    // }
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
       System.out.println("\nAll Instructors:");
       while (file.getFilePointer() < file.length()) {
