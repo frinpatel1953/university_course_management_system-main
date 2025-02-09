@@ -1,37 +1,68 @@
 package storage;
 
-import models.Student;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import exceptions.RecordNotFoundException;
-import java.io.*;
-// import utils.BinaryFileCheck;
+import models.Student;
 
 public class StudentFileHandler {
-  private static final String FILE_NAME = "src\\data\\students.dat"; // Path to the binary file
+    private static final String FILE_NAME = "src\\data\\students.dat";
 
-  /**
-   * Adds a new student record to the binary file.
-   * @param student the student to be added
-   * @throws IOException if file format is invalid or other I/O errors
-   */
-  public static void addStudent(Student student) throws IOException, RecordNotFoundException {
-    // Check if a student with the same ID already exists
-    try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
-        while (file.getFilePointer() < file.length()) {
-            Student existingStudent = Student.readFromFile(file);
-            if (existingStudent.getStudentID() == student.getStudentID()) {
-                throw new RecordNotFoundException("Student with ID " + student.getStudentID() + " already exists.");
+    /**
+     * Adds a student to the binary file.
+     */
+    public static void addStudent(Student student) throws IOException, RecordNotFoundException {
+        File fileObj = new File(FILE_NAME);
+
+        // If file doesn't exist or is empty, create it and write the student directly
+        if (!fileObj.exists() || fileObj.length() == 0) {
+            try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
+                student.writeToFile(file);
+            }
+            return; // Exit after writing the first student
+        }
+
+        // Check if student already exists
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
+            while (file.getFilePointer() < file.length()) {
+                Student existingStudent = Student.readFromFile(file);
+                if (existingStudent.getStudentID() == student.getStudentID()) {
+                    throw new RecordNotFoundException("Student with ID " + student.getStudentID() + " already exists.");
+                }
+            }
+        }
+
+        // Append new student if no duplicate is found
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
+            file.seek(file.length()); // Move to end of file
+            student.writeToFile(file);
+        }
+    }
+
+    /**
+     * Reads all students from the file.
+     */
+    public static void readAllStudents() throws IOException {
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
+            while (file.getFilePointer() < file.length()) {
+                Student student = Student.readFromFile(file);
+                System.out.println(student);
             }
         }
     }
 
-    // If no duplicate is found, append the new student
-    try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
-        file.seek(file.length()); // Move to the end of the file for appending
-        student.writeToFile(file); // Write student data to the file
+    /**
+     * Resets (deletes) the student file for testing purposes.
+     */
+    public static void resetFile() throws IOException {
+        File file = new File(FILE_NAME);
+        if (file.exists() && file.delete()) {
+            System.out.println("File reset successfully.");
+        }
     }
-}
 
-  /**
+    /**
    * Retrieves a student by their ID from the binary file.
    * @param studentID the ID of the student to be retrieved
    * @return the student object found

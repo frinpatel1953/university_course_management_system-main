@@ -1,11 +1,11 @@
 package storage;
 
 import models.Course;
+import models.Instructor; // Import Instructor class
 import exceptions.RecordNotFoundException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-// import utils.BinaryFileCheck;
 
 public class CourseFileHandler {
   private static final String FILE_NAME = "src\\data\\courses.dat"; // Ensure the file is a binary .dat file
@@ -32,7 +32,7 @@ public class CourseFileHandler {
         file.seek(file.length()); // Move to the end of the file to append
         course.writeToFile(file); // Write course details to the file
     }
-}
+  }
 
   /**
    * Retrieves a course by its ID from the binary file.
@@ -42,33 +42,28 @@ public class CourseFileHandler {
    * @throws RecordNotFoundException if the course is not found
    */
   public static Course getCourse(int courseID) throws IOException, RecordNotFoundException {
-    // if (!BinaryFileCheck.isBinaryFile(FILE_NAME)) {
-    //   throw new IOException("Invalid file format. Only binary .dat files are allowed.");
-    // }
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
-      while (file.getFilePointer() < file.length()) {
-        Course course = Course.readFromFile(file); // Read a course from the file
-        if (course.getCourseID() == courseID) {
-          return course; // Return the course if it matches the ID
+        while (file.getFilePointer() < file.length()) {
+            Course course = Course.readFromFile(file); // Read a course from the file
+            if (course.getCourseID() == courseID) {
+                return course; // Return the course if it matches the ID
+            }
         }
-      }
     }
     throw new RecordNotFoundException("Course with ID " + courseID + " not found.");
-  }
+}
 
   /**
    * Updates a course in the binary file based on the course ID.
    * @param courseID the ID of the course to be updated
    * @param newName the new name of the course
    * @param newCredits the new credit value of the course
+   * @param instructor the updated instructor
    * @throws IOException if file format is invalid or on other I/O errors
    * @throws RecordNotFoundException if the course is not found
    */
-  public static void updateCourse(int courseID, String newName, int newCredits)
+  public static void updateCourse(int courseID, String newName, int newCredits, Instructor instructor)
       throws IOException, RecordNotFoundException {
-    // if (!BinaryFileCheck.isBinaryFile(FILE_NAME)) {
-    //   throw new IOException("Invalid file format. Only binary .dat files are allowed.");
-    // }
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
       while (file.getFilePointer() < file.length()) {
         long position = file.getFilePointer(); // Save the position to update later
@@ -77,6 +72,7 @@ public class CourseFileHandler {
           file.seek(position); // Seek to the position to update
           newName = newName.length() > Course.NAME_SIZE ? newName.substring(0, Course.NAME_SIZE) : newName;
           course = new Course(courseID, newName, newCredits); // Create updated course
+          course.assignInstructor(instructor); // Assign updated instructor
           course.writeToFile(file); // Write updated course to file
           return;
         }
@@ -92,9 +88,6 @@ public class CourseFileHandler {
    * @throws RecordNotFoundException if the course is not found
    */
   public static void deleteCourse(int courseID) throws IOException, RecordNotFoundException {
-    // if (!BinaryFileCheck.isBinaryFile(FILE_NAME)) {
-    //   throw new IOException("Invalid file format. Only binary .dat files are allowed.");
-    // }
     File tempFile = new File("src\\data\\temp.dat");
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r");
         RandomAccessFile temp = new RandomAccessFile(tempFile, "rw")) {
@@ -120,9 +113,6 @@ public class CourseFileHandler {
    * @throws IOException if file format is invalid or on other I/O errors
    */
   public static List<Course> getAllCourses() throws IOException {
-    // if (!BinaryFileCheck.isBinaryFile(FILE_NAME)) {
-    //   throw new IOException("Invalid file format. Only binary .dat files are allowed.");
-    // }
     List<Course> courses = new ArrayList<>();
     try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
       while (file.getFilePointer() < file.length()) {
@@ -131,4 +121,13 @@ public class CourseFileHandler {
     }
     return courses;
   }
+
+  /**
+     * Retrieves a course by its ID from the binary file.
+     * @param courseID the ID of the course
+     * @return the course found
+     * @throws IOException if file format is invalid or on other I/O errors
+     * @throws RecordNotFoundException if the course is not found
+     */
+    
 }

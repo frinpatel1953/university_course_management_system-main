@@ -84,20 +84,20 @@ public class Menu {
           Student student = new Student(id, name, email);
           
           // Add courses to the student if necessary (can be extended)
-          // while (true) {
-          //   System.out.print("Do you want to enroll in a course? (y/n): ");
-          //   String response = scanner.nextLine();
-          //   if (response.equalsIgnoreCase("n")) break;
-          //   int courseId = getIntInput("Enter Course ID to enroll in: ");
-          //   // Retrieve course from the file and add it to the student (assumes CourseFileHandler has getCourse)
-          //   try {
-          //     Course course = CourseFileHandler.getCourse(courseId);
-          //     student.addCourse(course);
-          //     System.out.println("Course added successfully.");
-          //   } catch (RecordNotFoundException e) {
-          //     System.out.println("Course not found.");
-          //   }
-          // }
+          while (true) {
+            System.out.print("Do you want to enroll in a course? (y/n): ");
+            String response = scanner.nextLine();
+            if (response.equalsIgnoreCase("n")) break;
+            int courseId = getIntInput("Enter Course ID to enroll in: ");
+            // Retrieve course from the file and add it to the student (assumes CourseFileHandler has getCourse)
+            try {
+              Course course = CourseFileHandler.getCourse(courseId);
+              student.addCourse(course);
+              System.out.println("Course added successfully.");
+            } catch (RecordNotFoundException e) {
+              System.out.println("Course not found.");
+            }
+          }
           
           StudentFileHandler.addStudent(student);
           System.out.println("Student added successfully.");
@@ -123,10 +123,6 @@ public class Menu {
     System.out.println("4: Return to Main Menu");
     System.out.print("Enter your choice: ");
     int type = getIntInput();  // Get the record type from the user
-    if(type == 4){
-      System.out.println("Returning to the main menu...");
-          return;
-    }
     int id = getIntInput("Enter ID: ");  // Get the record ID from the user
 
     try {
@@ -200,7 +196,7 @@ public class Menu {
           // Get new Course details from the user and update the record
           String name = getStringInput("Enter new Course Name: ");
           int credits = getIntInput("Enter new Credits: ");
-          // CourseFileHandler.updateCourse(id, name, credits, null);
+          CourseFileHandler.updateCourse(id, name, credits, null);
           System.out.println("Course updated successfully.");
         }
         case 2 -> {
@@ -208,7 +204,7 @@ public class Menu {
           String name = getStringInput("Enter new Name: ");
           String email = getStringInput("Enter new Email: ");
           String dept = getStringInput("Enter new Department: ");
-          // InstructorFileHandler.updateInstructor(id, name, email, dept, null);
+          InstructorFileHandler.updateInstructor(id, name, email, dept);
           System.out.println("Instructor updated successfully.");
         }
         case 3 -> {
