@@ -59,14 +59,37 @@ void btnAROnClick(ActionEvent event) {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error loading AddRecordView.fxml. Make sure the file is in the correct directory.");
+            System.out.println("Error loading DisplayAllRecordsView.fxml. Make sure the file is in the correct directory.");
+        }
+    }
+
+    @FXML
+    void btnUROnClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdateRecordView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading UpdateRecordView.fxml. Make sure the file is in the correct directory.");
         }
     }
 
 
     @FXML
     void btnDROnClick(ActionEvent event) {
-        System.out.println("Delete a Record Clicked");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DeleteRecordView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading DeleteRecordView.fxml. Make sure the file is in the correct directory.");
+        }
     }
 
     
@@ -79,10 +102,7 @@ void btnAROnClick(ActionEvent event) {
 
     
 
-    @FXML
-    void btnUROnClick(ActionEvent event) {
-        System.out.println("Update a Record Clicked");
-    }
+    
 
     public void setMainWindow(Stage mainWindow) {
         this.mainWindow = mainWindow;
