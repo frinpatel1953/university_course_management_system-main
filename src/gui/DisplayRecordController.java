@@ -50,6 +50,16 @@ public class DisplayRecordController {
 
     @FXML
     void btnStudentOnClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DisplayStudentRecordView.fxml"));
+            root = loader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading DisplayStudentRecordView.fxml. Make sure the file is in the correct directory.");
+        }
 
     }
 
