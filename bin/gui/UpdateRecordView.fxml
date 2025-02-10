@@ -5,35 +5,27 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
-            prefHeight="400.0" prefWidth="600.0" 
-            xmlns="http://javafx.com/javafx/8" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="gui.UpdateRecordController">
 
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UpdateRecordView">
    <children>
-      <!-- Heading -->
       <TextArea layoutX="125.0" layoutY="33.0" prefHeight="40.0" prefWidth="369.0" text="University Course Management System">
          <font>
             <Font size="19.0" />
          </font>
       </TextArea>
-      
-      <!-- Subheading -->
-      <TextArea layoutX="209.0" layoutY="91.0" prefHeight="58.0" prefWidth="166.0" text="Update a Record">
+      <TextArea layoutX="125.0" layoutY="33.0" prefHeight="40.0" prefWidth="369.0" text="University Course Management System">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </TextArea>
+      <TextArea layoutX="209.0" layoutY="91.0" prefHeight="58.0" prefWidth="166.0" text="Update a Records">
          <font>
             <Font size="17.0" />
          </font>
       </TextArea>
-
-      <!-- Buttons (No Changes to Layout) -->
-      <Button fx:id="btnCourse" layoutX="157.0" layoutY="166.0" mnemonicParsing="false" 
-              onAction="#btnCourseOnClick" text="Course" />
-      <Button fx:id="btnInstructor" layoutX="379.0" layoutY="154.0" mnemonicParsing="false" 
-              onAction="#btnInstructorOnClick" text="Instructor" />
-      <Button fx:id="btnStudent" layoutX="164.0" layoutY="259.0" mnemonicParsing="false" 
-              onAction="#btnStudentOnClick" text="Student" />
-      <Button fx:id="btnBackToMainMenu" layoutX="386.0" layoutY="259.0" mnemonicParsing="false" 
-              onAction="#btnBackToMainMenu" text="Back to Main Menu" />
+      <Button fx:id="btnCourse" layoutX="157.0" layoutY="166.0" mnemonicParsing="false" onAction="#btnCourseOnClick" text="Course" />
+      <Button fx:id="btnInstructor" layoutX="379.0" layoutY="154.0" mnemonicParsing="false" onAction="#btnInstructorOnClick" text="Instructor" />
+      <Button fx:id="btnStudent" layoutX="164.0" layoutY="259.0" mnemonicParsing="false" onAction="#btnStudentOnClick" text="Student" />
+      <Button fx:id="btnBackToMainMenu" layoutX="386.0" layoutY="259.0" mnemonicParsing="false" onAction="#btnBackToMainMenu" text="Back to Main Menu" />
    </children>
 </AnchorPane>

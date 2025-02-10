@@ -17,19 +17,46 @@ public class AddRecordController {
 
     @FXML
     void btnStudentOnClick(ActionEvent event) {
-        System.out.println("Add Student Record Clicked");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddStudentView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading AddStudentView.fxml. Make sure the file is in the correct directory.");
+        }
         // Load Student Record Form
     }
 
     @FXML
     void btnInstructorOnClick(ActionEvent event) {
-        System.out.println("Add Instructor Record Clicked");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddInstructorView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading AddInstructorView.fxml. Make sure the file is in the correct directory.");
+        }
         // Load Instructor Record Form
     }
 
     @FXML
     void btnCourseOnClick(ActionEvent event) {
-        System.out.println("Add Course Record Clicked");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddCourseView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading AddCourseView.fxml. Make sure the file is in the correct directory.");
+        }
         // Load Course Record Form
     }
 
